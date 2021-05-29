@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export const Register = () => {
+export const Register = ({ users }) => {
+  const [userExists, setUserExists] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    if (users.filter(user => user.email === data.email).length > 0) {
+      setUserExists(true);
+      // setTimeout(() => setUserExists(false), 2000);
+    } else {
+      const max = Math.max(...users.map(user => Number(user.id)), 0);
+      const newId = max + 1;
+      data.id = newId.toString();
+      users = [...users, data];
+      // console.log(users);
+    }
+    reset({
+      userName: '',
+      email: '',
+      password: '',
+    });
+  };
 
   return (
     <div className="col">
@@ -23,7 +41,7 @@ export const Register = () => {
             {...register('userName', { required: true })}
           />
           {errors.userName?.type === 'required' && (
-            <p className="alert-danger mt-1">User name is required</p>
+            <p className="alert-danger mt-3">User name is required</p>
           )}
         </div>
         <div className="mb-3">
@@ -34,11 +52,12 @@ export const Register = () => {
             className="form-control"
             {...register('email', {
               required: true,
-              minLength: 7,
+              pattern: /@/,
             })}
+            onChange={() => setUserExists(false)}
           />
-          {errors.email?.type === 'required' && (
-            <p className="alert-danger mt-1">Email is required</p>
+          {errors.email && (
+            <p className="alert-danger mt-3">Valid email is required</p>
           )}
         </div>
         <div className="mb-3">
@@ -50,12 +69,11 @@ export const Register = () => {
             className="form-control"
             {...register('password', {
               required: true,
-              minLength: 7,
-              pattern: /^[a-zA-Z0-9]*$/i,
+              pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/,
             })}
           />
           {errors.password && (
-            <p className="alert-danger mt-1">
+            <p className="alert-danger mt-3">
               Password is required and should be at least 7 characters long and
               consist of letters and numbers
             </p>
@@ -63,6 +81,11 @@ export const Register = () => {
         </div>
         <input type="submit" className="btn btn-primary" />
       </form>
+      {userExists && (
+        <p className="alert alert-info mt-3">
+          User already exists! Please go to Login section
+        </p>
+      )}
     </div>
   );
 };
