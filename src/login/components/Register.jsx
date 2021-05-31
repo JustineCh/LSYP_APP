@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { usersAdd } from '../../core/reducers/UsersReducer';
 
-export const Register = ({ users }) => {
+export const Register = props => {
   const [userExists, setUserExists] = useState(false);
+
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.users.users);
+
+  const saveNewUser = (draft => {
+    dispatch(usersAdd(draft));
+  });
+
   const {
     register,
     formState: { errors },
@@ -13,13 +23,11 @@ export const Register = ({ users }) => {
   const onSubmit = data => {
     if (users.filter(user => user.email === data.email).length > 0) {
       setUserExists(true);
-      // setTimeout(() => setUserExists(false), 2000);
     } else {
       const max = Math.max(...users.map(user => Number(user.id)), 0);
       const newId = max + 1;
       data.id = newId.toString();
-      users = [...users, data];
-      // console.log(users);
+      saveNewUser(data);
     }
     reset({
       userName: '',
