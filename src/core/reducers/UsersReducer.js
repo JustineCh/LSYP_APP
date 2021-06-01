@@ -2,15 +2,19 @@ const initialState = {
   users: [
     {
       id: '1',
-      email: 'temai@dwad.dwa',
+      userName: 'Robert',
+      email: 'robert@test.com',
       password: 'pa55word',
     },
     {
       id: '2',
+      userName: 'Tomek',
       email: 'tomek@test.com',
       password: 'pa55word',
     },
   ],
+  loggedInUserId: undefined,
+  //   users: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +23,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         users: [...state.users, action.payload.draft],
+      };
+    case 'LOGGED_IN_USER':
+      return {
+        ...state,
+        loggedInUserId: action.payload.id,
       };
 
     default:
@@ -33,5 +42,12 @@ export const usersAdd = draft => {
   return {
     type: 'USERS_ADD',
     payload: { draft },
+  };
+};
+
+export const loggedInUserId = id => {
+  return {
+    type: 'LOGGED_IN_USER',
+    payload: { id },
   };
 };

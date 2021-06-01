@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { loggedInUserId } from '../../core/reducers/UsersReducer';
 
-export const Login = () => {
-  const { register } = useForm();
+export const Login = props => {
+  const { register, handleSubmit, reset } = useForm();
+  const [userDontExists, setUserDontExists] = useState(false);
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.users.users);
+  const loggedInUser = useCallback(id => {
+    dispatch(loggedInUserId(id));
+  }, []);
+
+  const onSubmit = data => {
+    const loginUser = users.find(user => user.email === data.email);
+    if (loginUser) {
+      if (loginUser.password === data.password) {
+        loggedInUser(loginUser.id);
+      } else {
+        setUserDontExists(true);
+      }
+    } else {
+      setUserDontExists(true);
+    }
+    reset({
+      userName: '',
+      email: '',
+      password: '',
+    });
+  };
 
   return (
-    <div class="col">
+    <div className="col">
       <h2>Login</h2>
-      <form className="w-75 ">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
-          <label htmlFor="emailAddress" className="form-label">
-            Email address
+          <label htmlFor="email" className="form-label">
+            Email
           </label>
-          <input className="form-control" {...register('emailAddress')} />
+          <input
+            className="form-control"
+            {...register('email')}
+            onChange={() => setUserDontExists(false)}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -22,12 +52,17 @@ export const Login = () => {
             type="password"
             className="form-control"
             {...register('password')}
+            onChange={() => setUserDontExists(false)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Login
-        </button>
+        <input type="submit" value="Login" className="btn btn-primary" />
       </form>
+      {userDontExists && (
+        <p className="alert alert-warning mt-3">
+          User does not exists! Please enter a valid email and password or
+          create an account
+        </p>
+      )}
     </div>
   );
 };

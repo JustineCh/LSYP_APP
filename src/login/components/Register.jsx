@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { usersAdd } from '../../core/reducers/UsersReducer';
@@ -8,10 +8,9 @@ export const Register = props => {
 
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
-
-  const saveNewUser = (draft => {
+  const saveNewUser = useCallback(draft => {
     dispatch(usersAdd(draft));
-  });
+  }, []);
 
   const {
     register,
