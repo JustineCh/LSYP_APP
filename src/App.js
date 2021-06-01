@@ -1,10 +1,12 @@
 import './App.css';
 import { LoginView } from './login/containers/LoginView';
+import  MainView  from './mainView/containers/MainView';
 
 function App() {
   return (
     <div className="App">
-      <LoginView />
+      {/* <LoginView /> */}
+      <MainView />
     </div>
   );
 }
