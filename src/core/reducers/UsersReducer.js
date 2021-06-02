@@ -1,24 +1,15 @@
 const initialState = {
-  users: [
-    {
-      id: '1',
-      userName: 'Robert',
-      email: 'robert@test.com',
-      password: 'pa55word',
-    },
-    {
-      id: '2',
-      userName: 'Tomek',
-      email: 'tomek@test.com',
-      password: 'pa55word',
-    },
-  ],
   loggedInUserId: undefined,
-  //   users: [],
+  users: [],
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'USERS_LOAD':
+      return {
+        ...state,
+        users: [...state.users, action.payload.users],
+      };
     case 'USERS_ADD':
       return {
         ...state,
@@ -49,5 +40,12 @@ export const loggedInUserId = id => {
   return {
     type: 'LOGGED_IN_USER',
     payload: { id },
+  };
+};
+
+export const usersLoad = users => {
+  return {
+    type: 'USERS_LOAD',
+    payload: { users },
   };
 };
