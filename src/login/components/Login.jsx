@@ -23,7 +23,6 @@ export const Login = props => {
         const user = users[0];
         if (formData.password === user.password) {
           currentUser(user);
-          console.log(user);
           return;
         }
       }
