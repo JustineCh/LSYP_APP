@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { loggedInUserId } from '../../core/reducers/UsersReducer';
+import { loggedInUserId, usersLoad } from '../../core/reducers/UsersReducer';
+import { fetchUserByEmail } from '../../core/hooks/useUsers';
 
 export const Login = props => {
   const { register, handleSubmit, reset } = useForm();
@@ -12,17 +13,26 @@ export const Login = props => {
     dispatch(loggedInUserId(id));
   }, []);
 
-  const onSubmit = data => {
-    const loginUser = users.find(user => user.email === data.email);
-    if (loginUser) {
-      if (loginUser.password === data.password) {
-        loggedInUser(loginUser.id);
-      } else {
-        setUserDontExists(true);
+  useEffect(() => {
+    dispatch(usersLoad());
+  }, []);
+
+  console.log('users:' + users);
+
+  const onSubmit = formData => {
+    fetchUserByEmail(formData.email).then(users => {
+      if (users.length > 0) {
+        const user = users[0];
+        if (formData.password === user.password) {
+          console.log(
+            'user:' + user.email,
+            'password: ' + user.password + 'zalogowany'
+          );
+          return;
+        }
       }
-    } else {
       setUserDontExists(true);
-    }
+    });
     reset({
       userName: '',
       email: '',
