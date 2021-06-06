@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { usersAdd } from '../../core/reducers/UsersReducer';
@@ -6,6 +6,7 @@ import { fetchUserByEmail } from '../../core/hooks/useUsers';
 
 export const Register = props => {
   const [userExists, setUserExists] = useState(false);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
@@ -23,13 +24,12 @@ export const Register = props => {
   const onSubmit = formData => {
     fetchUserByEmail(formData.email).then(users => {
       if (users.length > 0) {
-          setUserExists(true);
-        } else {
-          // to be finished
-          // const newUser = formData.type = "user";
-
-          // saveNewUser(...formData);
-        }
+        setUserExists(true);
+      } else {
+        const newUser = { ...formData, type: 'user' };
+        saveNewUser(newUser);
+        setRegisterSuccess(true);
+      }
     });
     reset({
       userName: '',
@@ -37,6 +37,10 @@ export const Register = props => {
       password: '',
     });
   };
+
+  useEffect(() => {
+    setTimeout(() => setRegisterSuccess(false), 3000);
+  }, [users]);
 
   return (
     <div className="col">
@@ -94,6 +98,12 @@ export const Register = props => {
       {userExists && (
         <p className="alert alert-info mt-3">
           User already exists! Please go to Login section
+        </p>
+      )}
+      {registerSuccess && (
+        <p className="alert alert-success mt-3">
+          You have successfully created an account! You can login now and use
+          your TaskManager
         </p>
       )}
     </div>
