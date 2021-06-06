@@ -1,6 +1,9 @@
 const initialState = {
   loggedInUser: null,
   users: [],
+  currentUserTasks: [],
+  newestTasks: [],
+  newestComments: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +22,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggedInUser: action.payload.currentUser,
+      };
+    case 'LOAD_CURRENT_USER_TASKS':
+      return {
+        ...state,
+        currentUserTasks: action.payload,
       };
 
     default:
@@ -47,5 +55,13 @@ export const usersLoad = users => {
   return {
     type: 'USERS_LOAD',
     payload: { users },
+  };
+};
+
+export const loadCurrentUserTasks = (currentUserTasks) => {
+
+  return {
+    type: 'LOAD_CURRENT_USER_TASKS',
+    payload: currentUserTasks
   };
 };
