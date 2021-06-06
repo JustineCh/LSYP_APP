@@ -38,7 +38,7 @@ export const NavBar = props => {
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
-                  to="/playlists"
+                  to="/users"
                   activeClassName="text-primary active"
                 >
                   Users
@@ -47,7 +47,7 @@ export const NavBar = props => {
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
-                  to="/search"
+                  to="/tasks"
                   activeClassName="text-primary active"
                 >
                   Tasks
@@ -56,7 +56,7 @@ export const NavBar = props => {
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
-                  to="/tracks"
+                  to="/scrum"
                   activeClassName="text-primary active"
                 >
                   Scrum
