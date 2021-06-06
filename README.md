@@ -8,5 +8,5 @@ npm install:
 To run json server use:
 `json-server --watch db.json --port 3000`
 
-To run the app use: 
-`npm start`
+To run the app use:
+`npm start` -- please answer yes if asked to run on different port
