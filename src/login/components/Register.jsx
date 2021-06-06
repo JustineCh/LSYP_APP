@@ -1,18 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { usersAdd } from '../../core/reducers/UsersReducer';
-import { fetchUserByEmail } from '../../core/hooks/useUsers';
+import { useSelector } from 'react-redux';
+import { fetchUserByEmail, postNewUser } from '../../core/hooks/useUsers';
 
 export const Register = props => {
   const [userExists, setUserExists] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
-  const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
-  const saveNewUser = useCallback(draft => {
-    dispatch(usersAdd(draft));
-  }, []);
 
   const {
     register,
@@ -27,7 +22,7 @@ export const Register = props => {
         setUserExists(true);
       } else {
         const newUser = { ...formData, type: 'user' };
-        saveNewUser(newUser);
+        postNewUser(newUser);
         setRegisterSuccess(true);
       }
     });
@@ -47,12 +42,12 @@ export const Register = props => {
       <h2>Create an account!</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
-          <label htmlFor="userName" className="form-label">
+          <label htmlFor="name" className="form-label">
             User name
           </label>
           <input
             className="form-control"
-            {...register('userName', { required: true })}
+            {...register('name', { required: true })}
           />
           {errors.userName?.type === 'required' && (
             <p className="alert-danger mt-3">User name is required</p>

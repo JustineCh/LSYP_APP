@@ -6,3 +6,9 @@ export const fetchUserByEmail = email => {
     .get('http://localhost:3000/users?email=' + email)
     .then(resp => resp.data);
 };
+
+export const postNewUser = (newUser) => {
+  return axios
+    .post('http://localhost:3000/users', newUser)
+    .then(resp => resp.data);
+};
