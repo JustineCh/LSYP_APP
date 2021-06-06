@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { loggedInUserId, usersLoad } from '../../core/reducers/UsersReducer';
+import { loggedInUser, usersLoad } from '../../core/reducers/UsersReducer';
 import { fetchUserByEmail } from '../../core/hooks/useUsers';
 
 export const Login = props => {
@@ -9,25 +9,21 @@ export const Login = props => {
   const [userDontExists, setUserDontExists] = useState(false);
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
-  const loggedInUser = useCallback(id => {
-    dispatch(loggedInUserId(id));
+  const currentUser = useCallback(user => {
+    dispatch(loggedInUser(user));
   }, []);
 
   useEffect(() => {
     dispatch(usersLoad());
   }, []);
 
-  console.log('users:' + users);
-
   const onSubmit = formData => {
     fetchUserByEmail(formData.email).then(users => {
       if (users.length > 0) {
         const user = users[0];
         if (formData.password === user.password) {
-          console.log(
-            'user:' + user.email,
-            'password: ' + user.password + 'zalogowany'
-          );
+          currentUser(user);
+          console.log(user);
           return;
         }
       }

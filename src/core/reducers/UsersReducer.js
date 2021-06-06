@@ -1,5 +1,5 @@
 const initialState = {
-  loggedInUserId: undefined,
+  loggedInUser: null,
   users: [],
 };
 
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
     case 'LOGGED_IN_USER':
       return {
         ...state,
-        loggedInUserId: action.payload.id,
+        loggedInUser: action.payload.currentUser,
       };
 
     default:
@@ -36,10 +36,10 @@ export const usersAdd = draft => {
   };
 };
 
-export const loggedInUserId = id => {
+export const loggedInUser = currentUser => {
   return {
     type: 'LOGGED_IN_USER',
-    payload: { id },
+    payload: { currentUser },
   };
 };
 

@@ -4,12 +4,12 @@ import MainView from './mainView/containers/MainView';
 import { useSelector } from 'react-redux';
 
 function App() {
-  const selectedUserId = useSelector(state => state.users.loggedInUserId);
-  console.log(selectedUserId);
+  const selectedUser = useSelector(state => state.users.loggedInUser);
+  
   return (
     <div className="App">
-      {!selectedUserId && <LoginView />}
-      {selectedUserId && <MainView />}
+      {!selectedUser && <LoginView />}
+      {selectedUser && <MainView />}
     </div>
   );
 }
