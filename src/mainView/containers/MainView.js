@@ -2,6 +2,8 @@ import React from 'react';
 import Navbar from '../../core/components/Navbar';
 import MyTasks from '../components/MyTasks';
 import { useSelector } from 'react-redux';
+import Tasks from '../components/Tasks';
+import NewestTasks from '../components/NewestTasks';
 
 const Mainview = props => {
   const selectedUser = useSelector(state => state.users.loggedInUser);
@@ -25,8 +27,8 @@ const Mainview = props => {
         </div>
         <div className="col-sm">
           <h4>New tasks</h4>
-          One of three columns
-            </div>
+          <NewestTasks />
+        </div>
         <div className="col-sm">
           <h4>New comments</h4>
           One of three columns

@@ -28,6 +28,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentUserTasks: action.payload,
       };
+    case 'LOAD_TASKS_SORTED_BY_NEWEST':
+      return {
+        ...state,
+        newestTasks: action.payload,
+      };
 
     default:
       return state;
@@ -63,5 +68,13 @@ export const loadCurrentUserTasks = (currentUserTasks) => {
   return {
     type: 'LOAD_CURRENT_USER_TASKS',
     payload: currentUserTasks
+  };
+};
+
+export const loadTasksSortedByNewest = (tasks) => {
+
+  return {
+    type: 'LOAD_TASKS_SORTED_BY_NEWEST',
+    payload: tasks
   };
 };

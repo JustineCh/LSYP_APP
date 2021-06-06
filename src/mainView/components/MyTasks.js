@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTasksByUserId } from '../../core/hooks/UseTasks';
 import { loadCurrentUserTasks } from '../../core/reducers/UsersReducer';
+import Tasks from './Tasks';
 
 
 const MyTasks = props => {
@@ -17,13 +18,7 @@ const MyTasks = props => {
    }, [])
 
    return (
-      <div className="card" >
-         <ul className="list-group list-group-flush">
-            {selectedUserTasks && selectedUserTasks.map(task => {
-               return <li className="list-group-item">{task.title}</li>
-            })}
-         </ul>
-      </div>
+      <Tasks tasks={selectedUserTasks}/>
    );
 };
 
