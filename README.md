@@ -2,6 +2,9 @@
 
 The project uses [JSON Server](https://github.com/typicode/json-server) and was created with [Create React App](https://github.com/facebook/create-react-app).
 
+npm install:
+`npm i`
+
 To run json server use:
 `json-server --watch db.json --port 3000`
 
